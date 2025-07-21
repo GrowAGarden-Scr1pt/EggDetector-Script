@@ -416,8 +416,8 @@ local loadAgeBtn = Instance.new("TextButton", frame)
 loadAgeBtn.Size = UDim2.new(1, -20, 0, 30)
 loadAgeBtn.Position = UDim2.new(0, 10, 1, -35)
 loadAgeBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
-loadAgeBtn.Text = "Load Pet Age 50 Script/dm me for key"
-loadAgeBtn.TextSize = 16
+loadAgeBtn.Text = "Pet Age 50|pm-tt for key @kuni_hub"
+loadAgeBtn.TextSize = 14
 loadAgeBtn.Font = Enum.Font.FredokaOne
 loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
