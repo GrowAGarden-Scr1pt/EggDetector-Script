@@ -20,7 +20,7 @@ local petTable = {
     ["Paradise Egg"] = { "Ostrich", "Peacock", "Capybara" },
     ["Dinosaur Egg"] = { "Raptor", "Triceratops", "Stegosaurus" },
     ["Primal Egg"] = { "Parasaurolophus", "Iguanodon", "Pachycephalosaurus" },
-    ["Zen Egg"] = { "Tanchozuru", "Kappa", "Kitsune", "Tanuki", "NihonZaru},
+    ["Zen Egg"] = { "Tanchozuru", "Kappa", "Kitsune", "Tanuki", "NihonZaru" },
 }
 
 local espEnabled = true
@@ -423,7 +423,7 @@ loadAgeBtn.Font = Enum.Font.FredokaOne
 loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 loadAgeBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://xaphy.io/load", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowAGarden-Scr1pt/scripts/refs/heads/main/Qloader.lua"))()
 end)
 
 local credit = Instance.new("TextLabel", frame)
