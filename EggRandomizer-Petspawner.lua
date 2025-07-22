@@ -1,165 +1,110 @@
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local player = Players.LocalPlayer
-local mouse = player:GetMouse()
+-- 🟠 Randomize Button
+local randomizeBtn = Instance.new("TextButton", frame)
+randomizeBtn.Size = UDim2.new(1, -20, 0, 40)
+randomizeBtn.Position = UDim2.new(0, 10, 0, 40)
+randomizeBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+randomizeBtn.Text = "Randomize Pets"
+randomizeBtn.TextSize = 20
+randomizeBtn.Font = Enum.Font.FredokaOne
+randomizeBtn.TextColor3 = Color3.new(1, 1, 1)
+randomizeBtn.MouseButton1Click:Connect(function()
+    countdownAndRandomize(randomizeBtn)
+end)
 
-local petTable = {
-    ["Common Egg"] = { "Dog", "Bunny", "Golden Lab" },
-    ["Uncommon Egg"] = { "Cat", "Red Fox", "Bat" },
-    ["Rare Egg"] = { "Tiger", "Fire Cat", "Icy Bat" },
-    ["Zen Egg"] = { "Tanchozuru", "Kappa", "Kitsune", "Tanuki", "NihonZaru" },
-    ["Mutation Egg"] = { "Weird Fox", "Double Dog", "Cursed Eye" }
-}
-
-local function createESP(target, text)
-    if target:FindFirstChild("ESPLabel") then return end
-    local billboard = Instance.new("BillboardGui", target)
-    billboard.Name = "ESPLabel"
-    billboard.Adornee = target:FindFirstChildWhichIsA("BasePart")
-    billboard.Size = UDim2.new(0, 100, 0, 40)
-    billboard.AlwaysOnTop = true
-
-    local label = Instance.new("TextLabel", billboard)
-    label.Size = UDim2.new(1, 0, 1, 0)
-    label.BackgroundTransparency = 1
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextStrokeTransparency = 0.3
-    label.Font = Enum.Font.GothamBold
-    label.TextScaled = true
-    label.Text = text
-end
-
-local function randomizeEggs()
-    for _, egg in pairs(Workspace:GetDescendants()) do
-        if egg:IsA("Model") and petTable[egg.Name] and not egg:FindFirstChild("ESPLabel") then
-            local petList = petTable[egg.Name]
-            local petName = petList[math.random(1, #petList)]
-            createESP(egg, egg.Name .. "\n🧬 " .. petName)
-        end
-    end
-end
-
-local function mutationESP()
-    for _, egg in pairs(Workspace:GetDescendants()) do
-        if egg:IsA("Model") and egg.Name == "Mutation Egg" and not egg:FindFirstChild("ESPLabel") then
-            createESP(egg, "Mutation Egg")
-        end
-    end
-end
-
--- 🆕 Pet Age 50
-local function loadAge50()
-    local success, err = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowAGarden-Scr1pt/scripts/refs/heads/main/Qloader.lua", true))()
-    end)
-
-    -- Fallback if GitHub file fails
-    if not success then
-        for _, obj in pairs(Workspace:GetDescendants()) do
-            if obj:IsA("IntValue") and obj.Name == "Age" then
-                obj.Value = 50
-            end
-        end
-    end
-end
-
--- GUI Setup
-local screenGui = Instance.new("ScreenGui", game.CoreGui)
-screenGui.Name = "PetGui"
-
-local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0, 220, 0, 230)
-frame.Position = UDim2.new(0.5, -110, 0.5, -115)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BorderSizePixel = 0
-frame.Active = true
-frame.Draggable = true
-
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-title.Text = "🐾 Q-Pet ESP Menu"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.Font = Enum.Font.FredokaOne
-title.TextSize = 18
-
--- 🟨 Minimize Toggle Button
+-- 🟡 Toggle ESP
 local toggleBtn = Instance.new("TextButton", frame)
-toggleBtn.Size = UDim2.new(0, 30, 0, 30)
-toggleBtn.Position = UDim2.new(1, -30, 0, 0)
-toggleBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-toggleBtn.Text = "-"
-toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-toggleBtn.Font = Enum.Font.FredokaOne
+toggleBtn.Size = UDim2.new(1, -20, 0, 35)
+toggleBtn.Position = UDim2.new(0, 10, 0, 90)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleBtn.Text = "ESP: ON"
 toggleBtn.TextSize = 18
-toggleBtn.ZIndex = 2
-
-local minimized = false
+toggleBtn.Font = Enum.Font.FredokaOne
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
 toggleBtn.MouseButton1Click:Connect(function()
-    minimized = not minimized
-    toggleBtn.Text = minimized and "+" or "-"
-    for _, child in ipairs(frame:GetChildren()) do
-        if child:IsA("TextButton") and child ~= toggleBtn then
-            child.Visible = not minimized
+    espEnabled = not espEnabled
+    toggleBtn.Text = espEnabled and "ESP: ON" or "ESP: OFF"
+    for _, egg in pairs(getPlayerGardenEggs(60)) do
+        if espEnabled then
+            applyEggESP(egg, truePetMap[egg])
+        else
+            removeEggESP(egg)
         end
     end
 end)
 
--- UI Buttons
-local eggBtn = Instance.new("TextButton", frame)
-eggBtn.Size = UDim2.new(1, -20, 0, 30)
-eggBtn.Position = UDim2.new(0, 10, 0, 40)
-eggBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 250)
-eggBtn.Text = "🥚 Egg ESP"
-eggBtn.TextSize = 16
-eggBtn.Font = Enum.Font.FredokaOne
-eggBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+-- 🟢 Auto Randomize
+local autoBtn = Instance.new("TextButton", frame)
+autoBtn.Size = UDim2.new(1, -20, 0, 35)
+autoBtn.Position = UDim2.new(0, 10, 0, 135)
+autoBtn.BackgroundColor3 = Color3.fromRGB(80, 150, 60)
+autoBtn.Text = "Auto Randomize: OFF"
+autoBtn.TextSize = 16
+autoBtn.Font = Enum.Font.FredokaOne
+autoBtn.TextColor3 = Color3.new(1, 1, 1)
 
-local mutationBtn = Instance.new("TextButton", frame)
-mutationBtn.Size = UDim2.new(1, -20, 0, 30)
-mutationBtn.Position = UDim2.new(0, 10, 0, 80)
-mutationBtn.BackgroundColor3 = Color3.fromRGB(180, 85, 200)
-mutationBtn.Text = "🧬 Mutation ESP"
-mutationBtn.TextSize = 16
-mutationBtn.Font = Enum.Font.FredokaOne
-mutationBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+local autoRunning = false
+local bestPets = {
+    ["Raccoon"] = true, ["Dragonfly"] = true, ["Queen Bee"] = true,
+    ["Disco Bee"] = true, ["Fennec Fox"] = true, ["Fox"] = true,
+    ["Mimic Octopus"] = true, ["Kitsune"] = true
+}
+autoBtn.MouseButton1Click:Connect(function()
+    autoRunning = not autoRunning
+    autoBtn.Text = autoRunning and "Auto Randomize: ON" or "Auto Randomize: OFF"
+    coroutine.wrap(function()
+        while autoRunning do
+            countdownAndRandomize(randomizeBtn)
+            for _, petName in pairs(truePetMap) do
+                if bestPets[petName] then
+                    autoRunning = false
+                    autoBtn.Text = "Auto Randomize: OFF"
+                    return
+                end
+            end
+            wait(1)
+        end
+    end)()
+end)
 
-local ageBtn = Instance.new("TextButton", frame)
-ageBtn.Size = UDim2.new(1, -20, 0, 30)
-ageBtn.Position = UDim2.new(0, 10, 0, 120)
-ageBtn.BackgroundColor3 = Color3.fromRGB(85, 200, 120)
-ageBtn.Text = "⏳ Pet Age 50"
-ageBtn.TextSize = 16
-ageBtn.Font = Enum.Font.FredokaOne
-ageBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-
+-- 🐶 Spawn Pet Script Button
 local spawnBtn = Instance.new("TextButton", frame)
 spawnBtn.Size = UDim2.new(1, -20, 0, 30)
-spawnBtn.Position = UDim2.new(0, 10, 0, 160)
+spawnBtn.Position = UDim2.new(0, 10, 0, 180)
 spawnBtn.BackgroundColor3 = Color3.fromRGB(120, 200, 100)
 spawnBtn.Text = "🐶 Spawn Pet Script"
 spawnBtn.TextSize = 16
 spawnBtn.Font = Enum.Font.FredokaOne
 spawnBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-
 spawnBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
+    end)
 end)
 
-local closeBtn = Instance.new("TextButton", frame)
-closeBtn.Size = UDim2.new(1, -20, 0, 30)
-closeBtn.Position = UDim2.new(0, 10, 0, 200)
-closeBtn.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
-closeBtn.Text = "❌ Close GUI"
-closeBtn.TextSize = 16
-closeBtn.Font = Enum.Font.FredokaOne
-closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+-- 🧬 Load Mutation ESP
+local loadPetBtn = Instance.new("TextButton", frame)
+loadPetBtn.Size = UDim2.new(1, -20, 0, 30)
+loadPetBtn.Position = UDim2.new(0, 10, 0, 215)
+loadPetBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
+loadPetBtn.Text = "Pet Mutation Esp Script"
+loadPetBtn.TextSize = 16
+loadPetBtn.Font = Enum.Font.FredokaOne
+loadPetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadPetBtn.MouseButton1Click:Connect(function()
+    -- Your existing Mutation ESP script here...
+end)
 
--- Button Connections
-eggBtn.MouseButton1Click:Connect(randomizeEggs)
-mutationBtn.MouseButton1Click:Connect(mutationESP)
-ageBtn.MouseButton1Click:Connect(loadAge50)
-closeBtn.MouseButton1Click:Connect(function() screenGui:Destroy() end)
+-- ⏳ Load Pet Age 50
+local loadAgeBtn = Instance.new("TextButton", frame)
+loadAgeBtn.Size = UDim2.new(1, -20, 0, 30)
+loadAgeBtn.Position = UDim2.new(0, 10, 0, 250)
+loadAgeBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
+loadAgeBtn.Text = "Load Pet Age 50 Script"
+loadAgeBtn.TextSize = 16
+loadAgeBtn.Font = Enum.Font.FredokaOne
+loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadAgeBtn.MouseButton1Click:Connect(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://xaphy.io/load", true))()
+    end)
+end)
