@@ -170,7 +170,7 @@ title.Size = UDim2.new(1, 0, 0, 30)
 title.BackgroundTransparency = 1
 title.Text = "Pet Randomizer"
 title.Font = Enum.Font.FredokaOne
-title.TextSize = 22
+title.TextSize = 16
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 local drag = Instance.new("TextButton", title)
@@ -196,7 +196,7 @@ local randomizeBtn = Instance.new("TextButton", frame)
 randomizeBtn.Size = UDim2.new(1, -20, 0, 50)
 randomizeBtn.Position = UDim2.new(0, 10, 0, 40)
 randomizeBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-randomizeBtn.Text = "Randomize Pets(rejoin)"
+randomizeBtn.Text = "Randomize Pets (rejoin)"
 randomizeBtn.TextSize = 20
 randomizeBtn.Font = Enum.Font.FredokaOne
 randomizeBtn.TextColor3 = Color3.new(1, 1, 1)
