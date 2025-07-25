@@ -196,7 +196,7 @@ local randomizeBtn = Instance.new("TextButton", frame)
 randomizeBtn.Size = UDim2.new(1, -20, 0, 50)
 randomizeBtn.Position = UDim2.new(0, 10, 0, 40)
 randomizeBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-randomizeBtn.Text = "Randomize Pets"
+randomizeBtn.Text = "Randomize Pets(rejoin)"
 randomizeBtn.TextSize = 20
 randomizeBtn.Font = Enum.Font.FredokaOne
 randomizeBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -307,7 +307,7 @@ Instance.new("UIStroke", frame).Color = Color3.fromRGB(100, 100, 110)
 
 local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, 0, 0, 35)
-title.Text = "Pet Mutation Finder"
+title.Text = "Pet Mutation Finder📡"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.GothamBold
@@ -369,7 +369,7 @@ end
 local basePart = machine:FindFirstChildWhichIsA("BasePart")
 
 local espGui = Instance.new("BillboardGui", basePart)
-espGui.Name = "MutationESP"
+espGui.Name = "🧬MutationESP"
 espGui.Adornee = basePart
 espGui.Size = UDim2.new(0, 200, 0, 40)
 espGui.StudsOffset = Vector3.new(0, 3, 0)
@@ -402,7 +402,7 @@ local function animateMutationReroll()
 	end
 	currentMutation = mutations[math.random(#mutations)]
 	espLabel.Text = currentMutation
-	reroll.Text = "Reroll Mutation"
+	reroll.Text = "🎲Reroll Mutation"
 end
 
 toggle.MouseButton1Click:Connect(function()
@@ -413,22 +413,17 @@ end)
 reroll.MouseButton1Click:Connect(animateMutationReroll)
 end)
 
-button.MouseButton1Click:Connect(callback)
-end
+local loadAgeBtn = Instance.new("TextButton", frame)
+loadAgeBtn.Size = UDim2.new(1, -20, 0, 30)
+loadAgeBtn.Position = UDim2.new(0, 10, 1, -35)
+loadAgeBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
+loadAgeBtn.Text = "🐈Pets Spawner Script"
+loadAgeBtn.TextSize = 16
+loadAgeBtn.Font = Enum.Font.FredokaOne
+loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Extra Scripts
-createExtraButton("Project-Reverse \"kennz_hub\"", 40, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
-end)
-
-createExtraButton("Dark Spawner (Need Key)", 90, function()
-	local Spawner = loadstring(game:HttpGet("https://codeberg.org/GrowAFilipino/GrowAGarden/raw/branch/main/Spawner.lua"))()
-	Spawner.Load()
-end)
-
--- Toggle Extra Panel
-openExtraBtn.MouseButton1Click:Connect(function()
-	extraPanel.Visible = not extraPanel.Visible
+loadAgeBtn.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
 end)
 
 local credit = Instance.new("TextLabel", frame)
