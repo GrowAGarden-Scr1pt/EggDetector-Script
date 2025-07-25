@@ -413,17 +413,73 @@ end)
 reroll.MouseButton1Click:Connect(animateMutationReroll)
 end)
 
-local loadAgeBtn = Instance.new("TextButton", frame)
-loadAgeBtn.Size = UDim2.new(1, -20, 0, 30)
-loadAgeBtn.Position = UDim2.new(0, 10, 1, -35)
-loadAgeBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
-loadAgeBtn.Text = "Load Pet Age 50 Script"
-loadAgeBtn.TextSize = 16
-loadAgeBtn.Font = Enum.Font.FredokaOne
-loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+-- Extra Button
+local openExtraBtn = createButton("📃More scripts here", 170)
 
-loadAgeBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowAGarden-Scr1pt/scripts/refs/heads/main/Qloader.lua"))()
+-- Extra Panel
+local extraPanel = Instance.new("Frame")
+extraPanel.Name = "ExtraPanel"
+extraPanel.Size = UDim2.new(0, 250, 0, 180)
+extraPanel.Position = UDim2.new(0.5, -15, 0.5, -90)
+extraPanel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+extraPanel.BackgroundTransparency = 0.3
+extraPanel.Active = true
+extraPanel.Draggable = true
+extraPanel.Visible = false
+extraPanel.Parent = screenGui
+
+Instance.new("UICorner", extraPanel).CornerRadius = UDim.new(0, 8)
+local extraStroke = Instance.new("UIStroke", extraPanel)
+extraStroke.Color = Color3.fromRGB(150, 150, 150)
+extraStroke.Thickness = 2
+
+local extraTitle = Instance.new("TextLabel")
+extraTitle.Size = UDim2.new(1, 0, 0, 30)
+extraTitle.Position = UDim2.new(0, 0, 0, 0)
+extraTitle.BackgroundTransparency = 1
+extraTitle.Text = "Kennz scripts"
+extraTitle.TextColor3 = Color3.fromRGB(220, 220, 220)
+extraTitle.Font = Enum.Font.GothamBold
+extraTitle.TextSize = 18
+extraTitle.Parent = extraPanel
+
+-- Extra Button Utility
+local function createExtraButton(text, posY, callback)
+	local button = Instance.new("TextButton")
+	button.Size = UDim2.new(0.9, 0, 0, 35)
+	button.Position = UDim2.new(0.05, 0, 0, posY)
+	button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+	button.BackgroundTransparency = 0.3
+	button.Text = text
+	button.Font = Enum.Font.GothamBold
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.TextSize = 14
+	button.Parent = extraPanel
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 6)
+	corner.Parent = button
+
+	local stroke = Instance.new("UIStroke", button)
+	stroke.Color = Color3.fromRGB(150, 150, 150)
+	stroke.Thickness = 2
+
+	button.MouseButton1Click:Connect(callback)
+end
+
+-- Extra Scripts
+createExtraButton("Pets Spawner \"kennz_hub\"", 40, function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/veryimportantrr/x/refs/heads/main/gag_visual.lua", true))("discord.gg/csxu2nCkw9")
+end)
+
+createExtraButton("Dark Spawner (Need Key)", 90, function()
+	local Spawner = loadstring(game:HttpGet("https://codeberg.org/GrowAFilipino/GrowAGarden/raw/branch/main/Spawner.lua"))()
+	Spawner.Load()
+end)
+
+-- Toggle Extra Panel
+openExtraBtn.MouseButton1Click:Connect(function()
+	extraPanel.Visible = not extraPanel.Visible
 end)
 
 local credit = Instance.new("TextLabel", frame)
