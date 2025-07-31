@@ -1,3 +1,73 @@
+-- Q-Style Loading Screen with Progress Bar (1%–100%)
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "Q_LoadingBar"
+screenGui.IgnoreGuiInset = true
+screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+screenGui.Parent = playerGui
+
+-- Background Frame
+local bg = Instance.new("Frame", screenGui)
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+
+-- Loading Frame Holder
+local holder = Instance.new("Frame", bg)
+holder.Size = UDim2.new(0, 420, 0, 80)
+holder.Position = UDim2.new(0.5, -210, 0.5, -40)
+holder.BackgroundTransparency = 1
+
+-- Text Label
+local label = Instance.new("TextLabel", holder)
+label.Size = UDim2.new(1, 0, 0, 30)
+label.Position = UDim2.new(0, 0, 0, 0)
+label.Text = "Loading... 0%"
+label.Font = Enum.Font.FredokaOne
+label.TextColor3 = Color3.fromRGB(180, 110, 255)
+label.BackgroundTransparency = 1
+label.TextScaled = true
+
+-- Outer Bar
+local barBG = Instance.new("Frame", holder)
+barBG.Size = UDim2.new(1, 0, 0, 20)
+barBG.Position = UDim2.new(0, 0, 1, -30)
+barBG.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+barBG.BorderSizePixel = 0
+Instance.new("UICorner", barBG).CornerRadius = UDim.new(0, 10)
+
+-- Progress Fill
+local bar = Instance.new("Frame", barBG)
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(180, 110, 255)
+bar.BorderSizePixel = 0
+Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 10)
+
+-- Sound (optional)
+local sound = Instance.new("Sound", screenGui)
+sound.SoundId = "rbxassetid://9118823106"
+sound.Volume = 1
+sound:Play()
+
+-- Animate Fill
+for i = 1, 100 do
+    bar.Size = UDim2.new(i / 100, 0, 1, 0)
+    label.Text = "Loading... " .. i .. "%"
+    wait(0.025)
+end
+
+-- Fade out everything
+TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+TweenService:Create(label, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
+TweenService:Create(bar, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+TweenService:Create(barBG, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+wait(0.6)
+screenGui:Destroy()
+
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local TweenService = game:GetService("TweenService")
@@ -430,7 +500,7 @@ local credit = Instance.new("TextLabel", frame)
 credit.Size = UDim2.new(1, 0, 0, 20)
 credit.Position = UDim2.new(0, 0, 0, 22)
 credit.BackgroundTransparency = 1
-credit.Text = "Note: Rejoin Server For Works"
+credit.Text = "PLS WAIT FOR LOADING..."
 credit.Font = Enum.Font.FredokaOne
 credit.TextSize = 14
 credit.TextColor3 = Color3.fromRGB(200, 200, 200)
