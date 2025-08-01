@@ -1,4 +1,110 @@
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "QStyleLoading"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = playerGui
+
+-- UI Corner Function
+local function roundify(gui, radius)
+	local uic = Instance.new("UICorner")
+	uic.CornerRadius = UDim.new(0, radius)
+	uic.Parent = gui
+end
+
+-- Background
+local bg = Instance.new("Frame")
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.BackgroundColor3 = Color3.fromRGB(10, 10, 20)
+bg.BackgroundTransparency = 0.4
+bg.BorderSizePixel = 0
+bg.Parent = screenGui
+
+-- Frame (centered box)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 100)
+frame.Position = UDim2.new(0.5, -150, 0.5, -50)
+frame.BackgroundColor3 = Color3.fromRGB(20, 5, 30)
+frame.BorderSizePixel = 0
+frame.Parent = bg
+roundify(frame, 12)
+
+-- Purple Glow Stroke
+local stroke = Instance.new("UIStroke", frame)
+stroke.Color = Color3.fromRGB(200, 0, 255)
+stroke.Thickness = 3
+stroke.Transparency = 0.25
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+TweenService:Create(stroke, TweenInfo.new(1.5, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true), {
+	Transparency = 0.05
+}):Play()
+
+-- Main Title Label
+local mainLabel = Instance.new("TextLabel")
+mainLabel.Size = UDim2.new(1, 0, 0.35, 0)
+mainLabel.Position = UDim2.new(0, 0, 0, 0)
+mainLabel.BackgroundTransparency = 1
+mainLabel.Text = "Loading Script, Please Wait..."
+mainLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+mainLabel.Font = Enum.Font.FredokaOne
+mainLabel.TextScaled = true
+mainLabel.Parent = frame
+
+-- Percent Progress Label
+local percentLabel = Instance.new("TextLabel")
+percentLabel.Size = UDim2.new(1, 0, 0.2, 0)
+percentLabel.Position = UDim2.new(0, 0, 0.35, 0)
+percentLabel.BackgroundTransparency = 1
+percentLabel.Text = "0%"
+percentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+percentLabel.Font = Enum.Font.FredokaOne
+percentLabel.TextScaled = true
+percentLabel.Parent = frame
+
+-- Progress Bar Background
+local barBg = Instance.new("Frame")
+barBg.Size = UDim2.new(1, -40, 0, 10)
+barBg.Position = UDim2.new(0, 20, 0.75, 0)
+barBg.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+barBg.BorderSizePixel = 0
+barBg.Parent = frame
+roundify(barBg, 8)
+
+-- Progress Bar Fill
+local barFill = Instance.new("Frame")
+barFill.Size = UDim2.new(0, 0, 1, 0)
+barFill.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
+barFill.BorderSizePixel = 0
+barFill.Parent = barBg
+roundify(barFill, 8)
+
+-- Loading Logic (50s)
+local duration = 50
+local steps = 100
+for i = 1, steps do
+	local percent = i / steps
+	barFill.Size = UDim2.new(percent, 0, 1, 0)
+	percentLabel.Text = i .. "%"
+	wait(duration / steps)
+end
+
+-- Fade out everything
+TweenService:Create(bg, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(frame, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(mainLabel, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(percentLabel, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(barBg, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(barFill, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+wait(1.2)
+screenGui:Destroy()
+
+local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -266,7 +372,7 @@ local loadPetBtn = Instance.new("TextButton", frame)
 loadPetBtn.Size = UDim2.new(1, -20, 0, 30)
 loadPetBtn.Position = UDim2.new(0, 10, 1, -75)
 loadPetBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
-loadPetBtn.Text = "Pet Mutation Esp Script"
+loadPetBtn.Text = "🧬 Pet Mutation Esp Script"
 loadPetBtn.TextSize = 16
 loadPetBtn.Font = Enum.Font.FredokaOne
 loadPetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -416,7 +522,7 @@ local loadAgeBtn = Instance.new("TextButton", frame)
 loadAgeBtn.Size = UDim2.new(1, -20, 0, 30)
 loadAgeBtn.Position = UDim2.new(0, 10, 1, -35)
 loadAgeBtn.BackgroundColor3 = Color3.fromRGB(100, 90, 200)
-loadAgeBtn.Text = "🐶Pet Age instant Lvl"
+loadAgeBtn.Text = "🧬 Instant Pets Age 50"
 loadAgeBtn.TextSize = 16
 loadAgeBtn.Font = Enum.Font.FredokaOne
 loadAgeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -430,7 +536,7 @@ local spawnerBtn = Instance.new("TextButton", frame)
 spawnerBtn.Size = UDim2.new(1, -20, 0, 30)
 spawnerBtn.Position = UDim2.new(0, 10, 1, -115)
 spawnerBtn.BackgroundColor3 = Color3.fromRGB(200, 160, 80)
-spawnerBtn.Text = "🐶 Load Pet Spawner"
+spawnerBtn.Text = "🐶 Pets Spawner Script"
 spawnerBtn.TextSize = 16
 spawnerBtn.Font = Enum.Font.FredokaOne
 spawnerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -444,7 +550,7 @@ local credit = Instance.new("TextLabel", frame)
 credit.Size = UDim2.new(1, 0, 0, 20)
 credit.Position = UDim2.new(0, 0, 0, 22)
 credit.BackgroundTransparency = 1
-credit.Text = "Note: Rejoin Server For Works"
+credit.Text = "Made by- Kennz_Hub"
 credit.Font = Enum.Font.FredokaOne
 credit.TextSize = 14
 credit.TextColor3 = Color3.fromRGB(200, 200, 200)
