@@ -3,14 +3,13 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Create ScreenGui
+-- Create GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "QStyleLoading"
 screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
 screenGui.Parent = playerGui
 
--- UI Corner Function
 local function roundify(gui, radius)
 	local uic = Instance.new("UICorner")
 	uic.CornerRadius = UDim.new(0, radius)
@@ -25,16 +24,16 @@ bg.BackgroundTransparency = 0.4
 bg.BorderSizePixel = 0
 bg.Parent = screenGui
 
--- Frame (centered box)
+-- Frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 300, 0, 100)
-frame.Position = UDim2.new(0.5, -150, 0.5, -50)
+frame.Size = UDim2.new(0, 300, 0, 150)
+frame.Position = UDim2.new(0.5, -150, 0.5, -75)
 frame.BackgroundColor3 = Color3.fromRGB(20, 5, 30)
 frame.BorderSizePixel = 0
 frame.Parent = bg
 roundify(frame, 12)
 
--- Purple Glow Stroke
+-- Neon Stroke
 local stroke = Instance.new("UIStroke", frame)
 stroke.Color = Color3.fromRGB(200, 0, 255)
 stroke.Thickness = 3
@@ -45,10 +44,39 @@ TweenService:Create(stroke, TweenInfo.new(1.5, Enum.EasingStyle.Linear, Enum.Eas
 	Transparency = 0.05
 }):Play()
 
--- Main Title Label
+-- Avatar Image
+local avatar = Instance.new("ImageLabel")
+avatar.Size = UDim2.new(0, 60, 0, 60)
+avatar.Position = UDim2.new(0.5, -30, 0.05, 0)
+avatar.BackgroundTransparency = 1
+avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. player.UserId .. "&width=420&height=420&format=png"
+roundify(avatar, 999)
+avatar.Parent = frame
+
+-- Pulse Animation
+task.spawn(function()
+	while avatar.Parent do
+		local grow = TweenService:Create(avatar, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+			Size = UDim2.new(0, 68, 0, 68),
+			Position = UDim2.new(0.5, -34, 0.05, -4),
+			ImageTransparency = 0.05
+		})
+		local shrink = TweenService:Create(avatar, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+			Size = UDim2.new(0, 60, 0, 60),
+			Position = UDim2.new(0.5, -30, 0.05, 0),
+			ImageTransparency = 0
+		})
+		grow:Play()
+		grow.Completed:Wait()
+		shrink:Play()
+		shrink.Completed:Wait()
+	end
+end)
+
+-- Main Text
 local mainLabel = Instance.new("TextLabel")
-mainLabel.Size = UDim2.new(1, 0, 0.35, 0)
-mainLabel.Position = UDim2.new(0, 0, 0, 0)
+mainLabel.Size = UDim2.new(1, 0, 0.2, 0)
+mainLabel.Position = UDim2.new(0, 0, 0.5, -10)
 mainLabel.BackgroundTransparency = 1
 mainLabel.Text = "Loading Script, Please Wait..."
 mainLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -56,10 +84,10 @@ mainLabel.Font = Enum.Font.FredokaOne
 mainLabel.TextScaled = true
 mainLabel.Parent = frame
 
--- Percent Progress Label
+-- Percent
 local percentLabel = Instance.new("TextLabel")
-percentLabel.Size = UDim2.new(1, 0, 0.2, 0)
-percentLabel.Position = UDim2.new(0, 0, 0.35, 0)
+percentLabel.Size = UDim2.new(1, 0, 0.15, 0)
+percentLabel.Position = UDim2.new(0, 0, 0.68, 0)
 percentLabel.BackgroundTransparency = 1
 percentLabel.Text = "0%"
 percentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -67,16 +95,15 @@ percentLabel.Font = Enum.Font.FredokaOne
 percentLabel.TextScaled = true
 percentLabel.Parent = frame
 
--- Progress Bar Background
+-- Progress Bar
 local barBg = Instance.new("Frame")
 barBg.Size = UDim2.new(1, -40, 0, 10)
-barBg.Position = UDim2.new(0, 20, 0.75, 0)
+barBg.Position = UDim2.new(0, 20, 0.85, 0)
 barBg.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
 barBg.BorderSizePixel = 0
 barBg.Parent = frame
 roundify(barBg, 8)
 
--- Progress Bar Fill
 local barFill = Instance.new("Frame")
 barFill.Size = UDim2.new(0, 0, 1, 0)
 barFill.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
@@ -84,8 +111,8 @@ barFill.BorderSizePixel = 0
 barFill.Parent = barBg
 roundify(barFill, 8)
 
--- Loading Logic (50s)
-local duration = 50
+-- 30-second loading logic
+local duration = 30
 local steps = 100
 for i = 1, steps do
 	local percent = i / steps
@@ -94,13 +121,14 @@ for i = 1, steps do
 	wait(duration / steps)
 end
 
--- Fade out everything
+-- Fade Out
 TweenService:Create(bg, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
 TweenService:Create(frame, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
 TweenService:Create(mainLabel, TweenInfo.new(1), {TextTransparency = 1}):Play()
 TweenService:Create(percentLabel, TweenInfo.new(1), {TextTransparency = 1}):Play()
 TweenService:Create(barBg, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
 TweenService:Create(barFill, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(avatar, TweenInfo.new(1), {ImageTransparency = 1}):Play()
 wait(1.2)
 screenGui:Destroy()
 
