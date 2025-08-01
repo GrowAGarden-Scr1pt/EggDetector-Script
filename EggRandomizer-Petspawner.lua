@@ -112,7 +112,7 @@ barFill.Parent = barBg
 roundify(barFill, 8)
 
 -- 30-second loading logic
-local duration = 30
+local duration = 10
 local steps = 100
 for i = 1, steps do
 	local percent = i / steps
