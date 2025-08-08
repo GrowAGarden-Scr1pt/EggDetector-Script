@@ -582,3 +582,78 @@ credit.Text = "Made by- Kennz_Hub"
 credit.Font = Enum.Font.FredokaOne
 credit.TextSize = 14
 credit.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+-- 🌟 Main Toggle Button (top-right corner, draggable)
+local mainToggleGui = Instance.new("ScreenGui")
+mainToggleGui.Name = "MainToggleGUI"
+mainToggleGui.Parent = player:WaitForChild("PlayerGui")
+
+local mainToggleBtn = Instance.new("TextButton")
+mainToggleBtn.Size = UDim2.new(0, 120, 0, 40)
+mainToggleBtn.Position = UDim2.new(1, -130, 0, 10)
+mainToggleBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainToggleBtn.Text = "Script: ON"
+mainToggleBtn.TextColor3 = Color3.new(1, 1, 1)
+mainToggleBtn.Font = Enum.Font.FredokaOne
+mainToggleBtn.TextSize = 18
+mainToggleBtn.Parent = mainToggleGui
+Instance.new("UICorner", mainToggleBtn).CornerRadius = UDim.new(0, 8)
+
+-- Dragging variables
+local dragging = false
+local dragInput, mousePos, framePos
+
+mainToggleBtn.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		mousePos = input.Position
+		framePos = mainToggleBtn.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+mainToggleBtn.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - mousePos
+		mainToggleBtn.Position = UDim2.new(
+			framePos.X.Scale, framePos.X.Offset + delta.X,
+			framePos.Y.Scale, framePos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+-- Toggle function
+local scriptEnabled = true
+
+mainToggleBtn.MouseButton1Click:Connect(function()
+	if dragging then return end -- prevent toggle while dragging
+	scriptEnabled = not scriptEnabled
+	mainToggleBtn.Text = scriptEnabled and "Script: ON" or "Script: OFF"
+	
+	-- Hide/Show your main pet GUI
+	screenGui.Enabled = scriptEnabled
+	
+	-- Toggle ESP globally
+	espEnabled = scriptEnabled
+	if not scriptEnabled then
+		-- Remove ESP from all eggs
+		for _, egg in pairs(getPlayerGardenEggs(60)) do
+			removeEggESP(egg)
+		end
+	else
+		-- Restore ESP
+		for _, egg in pairs(getPlayerGardenEggs(60)) do
+			applyEggESP(egg, truePetMap[egg])
+		end
+	end
+end)
