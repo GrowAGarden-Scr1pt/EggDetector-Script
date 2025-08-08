@@ -570,7 +570,8 @@ spawnerBtn.Font = Enum.Font.FredokaOne
 spawnerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 spawnerBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Skibidiking123/Fisch1/refs/heads/main/FischMain"))()
+    loadstring(game:HttpGet("https://codeberg.org/darkdarkdark/roblox/raw/branch/main/Spawner.lua"))()
+Spawner.Load()
 end)
 
 -- Credit Note
