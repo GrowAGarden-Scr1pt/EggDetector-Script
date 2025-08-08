@@ -330,7 +330,7 @@ local randomizeBtn = Instance.new("TextButton", frame)
 randomizeBtn.Size = UDim2.new(1, -20, 0, 50)
 randomizeBtn.Position = UDim2.new(0, 10, 0, 40)
 randomizeBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-randomizeBtn.Text = "Randomize Pets (rejoin)"
+randomizeBtn.Text = "Randomize Pets Please wait.."
 randomizeBtn.TextSize = 20
 randomizeBtn.Font = Enum.Font.FredokaOne
 randomizeBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -570,8 +570,8 @@ spawnerBtn.Font = Enum.Font.FredokaOne
 spawnerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 spawnerBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ranzurg/GrowaGarden/refs/heads/main/KaruHub.lua"))()
-end)
+        local Spawner = loadstring(game:HttpGet("https://codeberg.org/darkdarkdark/roblox/raw/branch/main/Spawner.lua"))()
+	end)
 
 -- Credit Note
 local credit = Instance.new("TextLabel", frame)
