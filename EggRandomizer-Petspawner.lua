@@ -570,8 +570,8 @@ spawnerBtn.Font = Enum.Font.FredokaOne
 spawnerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 spawnerBtn.MouseButton1Click:Connect(function()
-        local Spawner = loadstring(game:HttpGet("https://codeberg.org/darkdarkdark/roblox/raw/branch/main/Spawner.lua"))()
-	end)
+local Spawner = loadstring(game:HttpGet("https://codeberg.org/darkdarkdark/roblox/raw/branch/main/Spawner.lua"))()
+end)
 
 -- Credit Note
 local credit = Instance.new("TextLabel", frame)
