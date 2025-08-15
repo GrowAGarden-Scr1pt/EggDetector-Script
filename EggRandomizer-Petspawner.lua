@@ -1,3 +1,79 @@
+-- 📜 Welcome Message Popup with OK Button + Black Background + Fade Out
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+local welcomeGui = Instance.new("ScreenGui")
+welcomeGui.Name = "WelcomeMessage"
+welcomeGui.Parent = PlayerGui
+
+-- Black background
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.BackgroundTransparency = 0.3 -- Slightly see-through
+background.Parent = welcomeGui
+
+-- Main frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 160)
+frame.Position = UDim2.new(0.5, -200, 0.5, -80)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderSizePixel = 0
+frame.Parent = background
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 35)
+title.BackgroundTransparency = 1
+title.Text = "Welcome to Kennz_Hub Script"
+title.Font = Enum.Font.FredokaOne
+title.TextSize = 20
+title.TextColor3 = Color3.fromRGB(255, 255, 0)
+title.Parent = frame
+
+-- Note text
+local note = Instance.new("TextLabel")
+note.Size = UDim2.new(1, -20, 1, -75)
+note.Position = UDim2.new(0, 10, 0, 40)
+note.BackgroundTransparency = 1
+note.TextWrapped = true
+note.Text = "⚠️ Note: If no menu pops up or pets can't spawn, rejoin the game and execute again — sometimes it’s bugged. Thank you!"
+note.Font = Enum.Font.FredokaOne
+note.TextSize = 16
+note.TextColor3 = Color3.fromRGB(255, 255, 255)
+note.Parent = frame
+
+-- OK button
+local okBtn = Instance.new("TextButton")
+okBtn.Size = UDim2.new(0, 100, 0, 35)
+okBtn.Position = UDim2.new(0.5, -50, 1, -45)
+okBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+okBtn.Text = "OK"
+okBtn.Font = Enum.Font.FredokaOne
+okBtn.TextSize = 18
+okBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+okBtn.Parent = frame
+Instance.new("UICorner", okBtn).CornerRadius = UDim.new(0, 8)
+
+-- Fade out function
+local function fadeOutAndDestroy()
+	local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	TweenService:Create(background, tweenInfo, {BackgroundTransparency = 1}):Play()
+	TweenService:Create(frame, tweenInfo, {BackgroundTransparency = 1}):Play()
+	for _, child in pairs(frame:GetChildren()) do
+		if child:IsA("TextLabel") or child:IsA("TextButton") then
+			TweenService:Create(child, tweenInfo, {TextTransparency = 1}):Play()
+		end
+	end
+	wait(0.5)
+	welcomeGui:Destroy()
+end
+-- Close when clicked
+okBtn.MouseButton1Click:Connect(fadeOutAndDestroy)
+
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local TweenService = game:GetService("TweenService")
