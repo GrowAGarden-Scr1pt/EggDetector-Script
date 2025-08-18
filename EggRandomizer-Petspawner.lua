@@ -430,14 +430,13 @@ local spawnerBtn = Instance.new("TextButton", frame)
 spawnerBtn.Size = UDim2.new(1, -20, 0, 30)
 spawnerBtn.Position = UDim2.new(0, 10, 1, -115)
 spawnerBtn.BackgroundColor3 = Color3.fromRGB(200, 160, 80)
-spawnerBtn.Text = "🐶 Pets Spawner Script"
+spawnerBtn.Text = "Giftable Pets Spawner"
 spawnerBtn.TextSize = 16
 spawnerBtn.Font = Enum.Font.FredokaOne
 spawnerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 spawnerBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://gitlab.com/darkiedarkie/dark/-/raw/main/Spawner.lua"))()
-Spawner.Load()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/GrowAGarden-Scr1pt/EggDetector-Script/refs/heads/main/EggRandomizer-Petspawner.lua"))()	
 end)
 
 -- Credit Note
